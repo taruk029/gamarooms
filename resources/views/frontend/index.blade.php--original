@@ -1,0 +1,226 @@
+@extends('frontend.layout.app')
+@section('title', 'Home')
+@push('styles')
+<link href="{{ asset('public/assets/css/bootstrap-select.min.css') }}" rel="stylesheet">
+<style type="text/css">
+.sal{
+    line-height: 50px;
+}
+.dropdown-toggle
+{
+    background: transparent;
+    color: white;
+    border: 0px !important;
+    margin-top: 4px !important;
+}
+.filter-option-inner-inner
+{
+    font-size: 16px !important;    
+    font-weight: 100;
+    line-height: 38px !important;
+}
+</style>
+@endpush
+@section('content')
+<div class="theme-hero-area _h-desk-100vh">
+        <div class="theme-hero-area-bg-wrap">
+            <div class="theme-hero-area-bg ws-action" style="background-image:url({{asset('public/assets/img/rxgcjsathdq_1500x800.jpg') }});" data-parallax="true"></div>
+            <div class="theme-hero-area-mask theme-hero-area-mask-strong"></div>
+        </div>
+        <div class="theme-hero-area-body _pos-desk-v-c _w-f _pv-mob-50">
+          <div class="container">
+            <div class="theme-search-area _pv-200 _pv-mob-60 theme-search-area-stacked theme-search-area-white">
+                
+              <div class="theme-search-area-header">
+                <h1 class="theme-search-area-title theme-search-area-title-lg">
+                <center><img src="{{asset('public/img/glogo.png') }}" class="img-thumb"></h1></center>
+              </div>
+              <div class="tabbable">
+                <ul class="nav _fw-b _mb-5 nav-tabs nav-white nav-blank nav-xl nav-active-primary nav-mob-inline" role="tablist">
+                  <li class="active" role="presentation">
+                    <a aria-controls="SearchAreaTabs-1" role="tab" data-toggle="tab" href="#SearchAreaTabs-1"></a>
+                  </li>
+                </ul>
+                <form method="get" action="{{ url('search_hotel')}}" id="gama_form">
+                <div class="tab-content _pt-15">
+                  <div class="tab-pane active" id="SearchAreaTabs-1" role="tab-panel">
+                    <div class="theme-search-area theme-search-area-white">
+                      <div class="theme-search-area-form">
+                        <div class="row" data-gutter="30">
+                          <div class="col-md-2">
+                            <div class="theme-search-area-section first theme-search-area-section-line">
+                              <div class="theme-search-area-section-inner">
+                                <!-- <input class="theme-search-area-section-input typeahead" type="text" placeholder="Hotel Location" data-provide="typeahead"/> -->
+                                <select class="theme-search-area-section-input typeahead selectpicker form-control bg-white" autocomplete="off" data-dropup-auto="false" data-live-search="true" name="search_by_name" id="search_by_name" required>
+                                      <option value="">Location</option>
+                                    <?php
+                                    if($data)
+                                    {
+                                      foreach ($data as $row) 
+                                      { ?>
+                                          <option value="{{$row->location_id}},{{$row->province_id}}">{{$row->name}}, {{$row->province}}, {{$row->country}}</option>
+                                      <?php }
+                                    }
+                                     ?>
+                                  </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row" data-gutter="30">
+                              <div class="col-md-6 ">
+                                <div class="theme-search-area-section theme-search-area-section-line">
+                                  <div class="theme-search-area-section-inner">
+                                    <i class="theme-search-area-section-icon lin lin-calendar"></i>
+                                    <input class="theme-search-area-section-input datePickerStart" value="{{date('Y-m-d')}}"  autocomplete="off"  type="text" required placeholder="Check-in" name="start_date" />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6 ">
+                                <div class="theme-search-area-section theme-search-area-section-line">
+                                  <div class="theme-search-area-section-inner">
+                                    <i class="theme-search-area-section-icon lin lin-calendar"></i>
+                                    <input class="theme-search-area-section-input datePickerEnd _mob-h" value="{{date('Y-m-d')}}"  autocomplete="off"  type="text" required placeholder="Check-out"  name="end_date" />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="row" data-gutter="30">
+                                <div class="col-md-3 ">
+                                <div class="theme-search-area-section theme-search-area-section-line quantity-selector"  data-increment="Rooms">
+                                  <div class="theme-search-area-section-inner">
+                                    <i class="theme-search-area-section-icon lin lin-tag"></i>
+                                    <input class="theme-search-area-section-input" value="1 Room" type="text"  autocomplete="off"  required name="rooms"/>
+                                    <div class="quantity-selector-box" id="HotelSearchRooms">
+                                      <div class="quantity-selector-inner">
+                                        <p class="quantity-selector-title">Rooms</p>
+                                        <ul class="quantity-selector-controls">
+                                          <li class="quantity-selector-decrement">
+                                            <a href="#">&#45;</a>
+                                          </li>
+                                          <li class="quantity-selector-current">1</li>
+                                          <li class="quantity-selector-increment">
+                                            <a href="#">&#43;</a>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="theme-search-area-section theme-search-area-section-line quantity-selector" data-increment="Guests">
+                                  <div class="theme-search-area-section-inner">
+                                    <i class="theme-search-area-section-icon lin lin-people"></i>
+                                    <input class="theme-search-area-section-input" placeholder="Guests" type="text"  autocomplete="off"  required name="guest"/>
+                                    <div class="quantity-selector-box" id="HotelSearchGuests">
+                                      <div class="quantity-selector-inner">
+                                        <p class="quantity-selector-title">Guests</p>
+                                        <ul class="quantity-selector-controls">
+                                          <li class="quantity-selector-decrement">
+                                            <a href="#">&#45;</a>
+                                          </li>
+                                          <li class="quantity-selector-current">1</li>
+                                          <li class="quantity-selector-increment">
+                                            <a href="#">&#43;</a>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                </div>
+                                <div class="col-md-2">
+                                <div class="theme-search-area-section theme-search-area-section-line quantity-selector" data-increment="Kids">
+                                  <div class="theme-search-area-section-inner">
+                                    <i class="theme-search-area-section-icon lin lin-people"></i>
+                                    <input class="theme-search-area-section-input" placeholder="Kids" type="text" name="kids"  autocomplete="off"  id="kids"/>
+                                    <div class="quantity-selector-box" id="HotelSearchGuests">
+                                      <div class="quantity-selector-inner">
+                                        <p class="quantity-selector-title">Kids</p>
+                                        <ul class="quantity-selector-controls">
+                                          <li class="quantity-selector-decrement" onclick="javascript:kidsAge();">
+                                            <a href="#">&#45;</a>
+                                          </li>
+                                          <li class="quantity-selector-current">1</li>
+                                          <li class="quantity-selector-increment"  onclick="javascript:kidsAge();">
+                                            <a href="#">&#43;</a>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <div class="theme-search-area-section first theme-search-area-section-line">
+                                  <div class="theme-search-area-section-inner">
+                                    <!-- <input class="theme-search-area-section-input typeahead" type="text" placeholder="Hotel Location" data-provide="typeahead"/> -->
+                                    <select class="theme-search-area-section-input typeahead selectpicker form-control bg-white"  autocomplete="off"  data-dropup-auto="false" data-live-search="true" name="source_market" id="source_market" required>
+                                          <option value=""> Guest  Nationality</option>
+                                        <?php
+                                        if($country)
+                                        {
+                                          foreach ($country as $val) 
+                                          { ?>
+                                              <option value="{{$val->countrycode}}">{{$val->name}}</option>
+                                          <?php }
+                                        }
+                                         ?>
+                                      </select>
+                                  </div>
+                            </div>
+                          </div>
+                            </div>
+                          </div><!--
+                          <div class="col-md-1 ">
+                            <button class="theme-search-area-submit _mt-0 _fs-xl theme-search-area-submit-curved theme-search-area-submit-primary theme-search-area-submit-glow">&rarr;</button>
+                          </div>-->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-content _pt-15">
+                  <div class="tab-pane active" id="SearchAreaTabs-1" role="tab-panel">
+                    <div class="theme-search-area theme-search-area-white">
+                      <div class="theme-search-area-form">
+                        <div class="row" data-gutter="30">
+                          
+                          <div id="kids_age_div" style="display:none;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><br><br>
+                <center>
+                    <button class="theme-search-area-submit _mt-0 _fs-xl theme-search-area-submit-curved theme-search-area-submit-primary theme-search-area-submit-glow">Search Hotels &rarr;</button>
+                </center>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+@endsection
+@push('scripts')
+<script type="text/javascript" src="{{ asset('public/assets/js/bootstrap-select.min.js') }}"></script>
+<script>
+    $("#kids").click(function() 
+    {
+       kidsAge();
+});
+  function kidsAge()
+  {
+      var kids =  parseInt($("#kids").val());
+       var age_list = [];
+       for(var i=1; i<=kids; i++)
+       {
+           age_list.push('<div class="col-md-2"><div class="theme-search-area-section theme-search-area-section-line"><div class="theme-search-area-section-inner"><input class="theme-search-area-section-input" placeholder="Kid Age '+i+'" type="text" name="kids_age[]" /></div></div></div>');
+       }
+       $("#kids_age_div").html(age_list);
+  }
+</script>
+@endpush
